@@ -7,7 +7,7 @@ import io
 app = Flask(__name__)
 
 # Load your model
-model = load_model("Electronic-Component-Detector-mod-x.keras")
+model = load_model("Electronic-Component-Detector2.keras")
 
 class_names = {
     0: 'arduino',
@@ -29,7 +29,7 @@ def preprocess_image(image_bytes):
     data = np.asarray(img) / 255.0
     return np.expand_dims(data, axis=0)
 
-@app.route('/predict', methods=['POST'])
+@app.route('/api/predict', methods=['POST'])
 def predict():
     if 'image' not in request.files:
         return jsonify({'error': 'No image provided'}), 400
@@ -41,5 +41,5 @@ def predict():
     top_pred = class_names[np.argmax(probs)]
     return jsonify({'prediction': f'this is a {top_pred}', 'probability': float(top_prob)})
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+# Export the app as a module-level variable named "app"
+app = app
